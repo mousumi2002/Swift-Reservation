@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "432477649554",
+    "project_id": "swift-reservation",
+    "storage_bucket": "swift-reservation.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432477649554:android:912540159a549a1815c44b",
+        "android_client_info": {
+          "package_name": "com.mousumi.swift_reservation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD80O5HN_hSp6yLNsKKS7LsO2Jx8-8YTIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
