@@ -30,17 +30,18 @@ class CardTile extends StatelessWidget {
       return Colors.green.shade700;
     } else if (status == 'Waiting') {
       return Colors.blueGrey.shade700;
-    } else if (status == 'Cancelled') {
+    } else if (status == 'Cancelled' || status == 'CheckOut') {
       return Colors.deepOrange.shade600;
-    } else {
+    } else if (status == 'CheckIn') {
       return Colors.pink;
+    } else {
+      return Colors.blue.shade900;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final List<String> statusList = [
-      'All',
       'Confirmed',
       'Waiting',
       'Cancelled',
