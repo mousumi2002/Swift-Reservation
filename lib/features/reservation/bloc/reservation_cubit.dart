@@ -39,4 +39,19 @@ class ReservationCubit extends Cubit<ReservationState> {
       }
     emit(state.copyWith(isLoading: false));
   }
+
+  Future<void> updateReservation(String id, Map<String, Object> map) async {
+    final firestore = FirebaseFirestore.instance;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final collectionRef = firestore.collection('business_reservations/$uid/reservations');
+    final reservationDocRef = collectionRef.doc(id);
+    emit(state.copyWith(isLoading: true));
+    try {
+      await reservationDocRef.update(map);
+      emit(state.copyWith(success: true));
+    } on FirebaseException catch (e) {
+      emit(state.copyWith(error: e.message ?? 'An error occurred while editing reservation'));
+    }
+    emit(state.copyWith(isLoading: false));
+  }
 }

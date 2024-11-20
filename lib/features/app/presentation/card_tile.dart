@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:swift_reservation/features/reservation/presentation/pages/edit_reservation_page.dart';
 
 class CardTile extends StatelessWidget {
   const CardTile({
@@ -13,6 +14,7 @@ class CardTile extends StatelessWidget {
     required this.specialRequests,
     required this.status,
     required this.docId,
+    required this.reservationData,
   });
   final String firstName;
   final String lastName;
@@ -21,6 +23,7 @@ class CardTile extends StatelessWidget {
   final String specialRequests;
   final String status;
   final String docId;
+  final Map<String, dynamic> reservationData;
 
   Color? cardColorByStatus(String status) {
     if (status == 'Confirmed') {
@@ -29,7 +32,7 @@ class CardTile extends StatelessWidget {
       return Colors.blueGrey.shade700;
     } else if (status == 'Cancelled') {
       return Colors.deepOrange.shade600;
-    }else{
+    } else {
       return Colors.pink;
     }
   }
@@ -126,7 +129,11 @@ class CardTile extends StatelessWidget {
                     width: 8,
                   ),
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditReservationPage(
+                              reservationData: reservationData)));
+                    },
                     label: const Text(
                       'Edit',
                       style: TextStyle(color: Colors.white),
@@ -152,18 +159,19 @@ class CardTile extends StatelessWidget {
                         elevation: 16,
                         style: const TextStyle(color: Colors.black),
                         onChanged: (String? value) {
-                          if(value == null) {
+                          if (value == null) {
                             return;
                           }
                           final firestore = FirebaseFirestore.instance;
                           final uid = FirebaseAuth.instance.currentUser?.uid;
-                          final collectionRef = firestore.collection('business_reservations/$uid/reservations');
+                          final collectionRef = firestore.collection(
+                              'business_reservations/$uid/reservations');
                           final reservationDocRef = collectionRef.doc(docId);
-                          Map<String,String> updatedStatus = {'status' : value};
+                          Map<String, String> updatedStatus = {'status': value};
                           reservationDocRef.update(updatedStatus);
                         },
-                        items:
-                            statusList.map<DropdownMenuItem<String>>((String value) {
+                        items: statusList
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),

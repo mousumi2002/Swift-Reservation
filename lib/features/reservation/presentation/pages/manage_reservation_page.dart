@@ -123,6 +123,7 @@ class _ManageReservationPageState extends State<ManageReservationPage> {
                     specialRequests: data['specialRequest'],
                     status: data['status'],
                     docId: data['id'],
+                    reservationData: data,
                   );
                 }),
           ),
