@@ -13,6 +13,7 @@ class CreateReservationPage extends StatefulWidget {
 
 class _CreateReservationPageState extends State<CreateReservationPage> {
   final dateFormat = DateFormat('dd-MM-yyyy');
+  final dateTimeFormat = DateFormat('dd-MM-yyyy hh:mm');
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final timeController = TextEditingController();
@@ -46,7 +47,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
 
     if (pickedTime != null) {
       setState(() {
-        timeController.text = pickedTime.format(context);
+        timeController.text = '${pickedTime.hour.toString().padLeft(2,'0')}:${pickedTime.minute}';
       });
     }
   }
@@ -224,7 +225,28 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                BlocBuilder<ReservationCubit, ReservationState>(
+                BlocConsumer<ReservationCubit, ReservationState>(
+                  listener: (context, state) {
+                    if (state.error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error!),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                    else if (state.success) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Reservation created successfully'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  },
+                  listenWhen: (previous, current) {
+                    return current.error != null || previous.success != current.success;
+                  },
                   builder: (context, state) {
                     return state.isLoading
                         ? const CircularProgressIndicator()
@@ -241,8 +263,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                                       'lastName': lastNameController.text,
                                       'phoneNumber': phoneNumberController.text,
                                       'email': emailController.text,
-                                      'date': dateController.text,
-                                      'time': timeController.text,
+                                      'date': dateTimeFormat.parse('${dateController.text} ${timeController.text}'),
                                       'numberOfPeople':
                                           numberOfPeopleController.text,
                                       'specialRequest':
@@ -275,8 +296,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                                       'lastName': lastNameController.text,
                                       'phoneNumber': phoneNumberController.text,
                                       'email': emailController.text,
-                                      'date': dateController.text,
-                                      'time': timeController.text,
+                                      'date': dateTimeFormat.parse('${dateController.text} ${timeController.text}'),
                                       'numberOfPeople':
                                           numberOfPeopleController.text,
                                       'specialRequest':

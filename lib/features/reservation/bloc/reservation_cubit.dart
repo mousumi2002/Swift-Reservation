@@ -9,6 +9,8 @@ part 'reservation_cubit.g.dart';
 class ReservationState with _$ReservationState {
   factory ReservationState({
     @Default(false) final bool isLoading,
+    final String? error,
+    @Default(false) final bool success
 }) = _ReservationState;
   factory ReservationState.fromJson(Map<String, Object?> json) =>
       _$ReservationStateFromJson(json);
@@ -24,12 +26,17 @@ class ReservationCubit extends Cubit<ReservationState> {
     final collectionRef = firestore.collection('business_reservations/$uid/reservations');
     final reservationDocRef = collectionRef.doc();
     emit(state.copyWith(isLoading: true));
-    await reservationDocRef.set({
-      'id': reservationDocRef.id,
-      'creationDate': DateTime.now(),
-      ...reservationData,
-      'status' : isWaiting ? 'waiting' : 'confirmed',
-    });
+      try {
+        await reservationDocRef.set({
+          'id': reservationDocRef.id,
+          'creationDate': DateTime.now(),
+          ...reservationData,
+          'status': isWaiting ? 'waiting' : 'confirmed',
+        });
+        emit(state.copyWith(success: true));
+      } on FirebaseException catch (e) {
+        emit(state.copyWith(error: e.message ?? 'An error occurred while creating reservation'));
+      }
     emit(state.copyWith(isLoading: false));
   }
 }

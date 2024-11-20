@@ -21,6 +21,8 @@ ReservationState _$ReservationStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ReservationState {
   bool get isLoading => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
+  bool get success => throw _privateConstructorUsedError;
 
   /// Serializes this ReservationState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +40,7 @@ abstract class $ReservationStateCopyWith<$Res> {
           ReservationState value, $Res Function(ReservationState) then) =
       _$ReservationStateCopyWithImpl<$Res, ReservationState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String? error, bool success});
 }
 
 /// @nodoc
@@ -57,11 +59,21 @@ class _$ReservationStateCopyWithImpl<$Res, $Val extends ReservationState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? error = freezed,
+    Object? success = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      success: null == success
+          ? _value.success
+          : success // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -75,7 +87,7 @@ abstract class _$$ReservationStateImplCopyWith<$Res>
       __$$ReservationStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String? error, bool success});
 }
 
 /// @nodoc
@@ -92,11 +104,21 @@ class __$$ReservationStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? error = freezed,
+    Object? success = null,
   }) {
     return _then(_$ReservationStateImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      success: null == success
+          ? _value.success
+          : success // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -105,7 +127,8 @@ class __$$ReservationStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ReservationStateImpl implements _ReservationState {
-  _$ReservationStateImpl({this.isLoading = false});
+  _$ReservationStateImpl(
+      {this.isLoading = false, this.error, this.success = false});
 
   factory _$ReservationStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReservationStateImplFromJson(json);
@@ -113,10 +136,15 @@ class _$ReservationStateImpl implements _ReservationState {
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  final String? error;
+  @override
+  @JsonKey()
+  final bool success;
 
   @override
   String toString() {
-    return 'ReservationState(isLoading: $isLoading)';
+    return 'ReservationState(isLoading: $isLoading, error: $error, success: $success)';
   }
 
   @override
@@ -125,12 +153,14 @@ class _$ReservationStateImpl implements _ReservationState {
         (other.runtimeType == runtimeType &&
             other is _$ReservationStateImpl &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.success, success) || other.success == success));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading, error, success);
 
   /// Create a copy of ReservationState
   /// with the given fields replaced by the non-null parameter values.
@@ -150,13 +180,20 @@ class _$ReservationStateImpl implements _ReservationState {
 }
 
 abstract class _ReservationState implements ReservationState {
-  factory _ReservationState({final bool isLoading}) = _$ReservationStateImpl;
+  factory _ReservationState(
+      {final bool isLoading,
+      final String? error,
+      final bool success}) = _$ReservationStateImpl;
 
   factory _ReservationState.fromJson(Map<String, dynamic> json) =
       _$ReservationStateImpl.fromJson;
 
   @override
   bool get isLoading;
+  @override
+  String? get error;
+  @override
+  bool get success;
 
   /// Create a copy of ReservationState
   /// with the given fields replaced by the non-null parameter values.
