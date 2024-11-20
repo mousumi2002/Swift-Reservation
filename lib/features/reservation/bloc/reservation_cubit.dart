@@ -31,7 +31,7 @@ class ReservationCubit extends Cubit<ReservationState> {
           'id': reservationDocRef.id,
           'creationDate': DateTime.now(),
           ...reservationData,
-          'status': isWaiting ? 'waiting' : 'confirmed',
+          'status': isWaiting ? 'Waiting' : 'Confirmed',
         });
         emit(state.copyWith(success: true));
       } on FirebaseException catch (e) {

@@ -1,27 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CardTile extends StatelessWidget {
-  const CardTile(
-      {super.key,
-      required this.firstName,
-      required this.lastName,
-      required this.reservationDate,
-      required this.numberOfPeople,
-      required this.specialRequests});
+  const CardTile({
+    super.key,
+    required this.firstName,
+    required this.lastName,
+    required this.reservationDate,
+    required this.numberOfPeople,
+    required this.specialRequests,
+    required this.status,
+    required this.docId,
+  });
   final String firstName;
   final String lastName;
   final DateTime reservationDate;
   final String numberOfPeople;
   final String specialRequests;
+  final String status;
+  final String docId;
+
+  Color? cardColorByStatus(String status) {
+    if (status == 'Confirmed') {
+      return Colors.green.shade700;
+    } else if (status == 'Waiting') {
+      return Colors.blueGrey.shade700;
+    } else if (status == 'Cancelled') {
+      return Colors.deepOrange.shade600;
+    }else{
+      return Colors.pink;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> statusList = [
+      'All',
+      'Confirmed',
+      'Waiting',
+      'Cancelled',
+      'CheckOut',
+      'CheckIn'
+    ];
     final timeFormat = DateFormat('hh:mm a');
     return Container(
       margin: const EdgeInsets.all(8),
       child: Card(
-        color: Colors.deepOrange,
+        color: cardColorByStatus(status),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -84,12 +111,13 @@ class CardTile extends StatelessWidget {
               ),
               specialRequests != ""
                   ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
                         'Special requests: $specialRequests',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                  )
+                    )
                   : const SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -111,15 +139,37 @@ class CardTile extends StatelessWidget {
                   const SizedBox(
                     width: 8,
                   ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    label: const Text(
-                      'Cancel',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    icon: const Icon(
-                      Icons.cancel_rounded,
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
                       color: Colors.white,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        isDense: true,
+                        value: status,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        onChanged: (String? value) {
+                          if(value == null) {
+                            return;
+                          }
+                          final firestore = FirebaseFirestore.instance;
+                          final uid = FirebaseAuth.instance.currentUser?.uid;
+                          final collectionRef = firestore.collection('business_reservations/$uid/reservations');
+                          final reservationDocRef = collectionRef.doc(docId);
+                          Map<String,String> updatedStatus = {'status' : value};
+                          reservationDocRef.update(updatedStatus);
+                        },
+                        items:
+                            statusList.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ],
