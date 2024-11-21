@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:swift_reservation/features/app/bloc/navigator_cubit.dart';
+import 'package:swift_reservation/features/reservation/presentation/pages/dashboard_page.dart';
 import '../../../auth/auth_cubit.dart';
 import '../../../reservation/presentation/pages/create_reservation_page.dart';
 import '../../../reservation/presentation/pages/manage_reservation_page.dart';
@@ -44,8 +45,10 @@ class HomePage extends StatelessWidget {
                       child: Text('Swift Reservation',style: TextStyle(color: Colors.white,fontSize: 20),),
                     ),
                     ListTile(
-                      title: const Text('Profile'),
-                      onTap: () {},
+                      title: const Text('Dashboard'),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DashboardPage()));
+                      },
                     ),
                     ListTile(
                       title: const Text('Logout'),

@@ -64,10 +64,19 @@ class _ManageReservationPageState extends State<ManageReservationPage> {
                       color: Colors.white,
                     )),
                 date != null
-                    ? Text(
-                        dateTimeFormat.format(date!),
-                        style: const TextStyle(color: Colors.white),
-                      )
+                    ? Row(
+                      children: [
+                        Text(
+                            dateTimeFormat.format(date!),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        IconButton(onPressed: (){
+                          setState(() {
+                            date = null;
+                          });
+                        }, icon: const Icon(Icons.cancel_outlined,color: Colors.white,))
+                      ],
+                    )
                     : const Text(
                         'Select Date',
                         style: TextStyle(color: Colors.white),
