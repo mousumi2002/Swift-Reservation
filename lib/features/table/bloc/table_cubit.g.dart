@@ -14,6 +14,8 @@ _$TableStateImpl _$$TableStateImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => TableModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      activeReservationData:
+          json['activeReservationData'] as Map<String, dynamic>? ?? const {},
     );
 
 Map<String, dynamic> _$$TableStateImplToJson(_$TableStateImpl instance) =>
@@ -21,4 +23,5 @@ Map<String, dynamic> _$$TableStateImplToJson(_$TableStateImpl instance) =>
       'isLoading': instance.isLoading,
       'error': instance.error,
       'tables': instance.tables,
+      'activeReservationData': instance.activeReservationData,
     };

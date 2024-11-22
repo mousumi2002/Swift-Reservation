@@ -23,6 +23,8 @@ mixin _$TableState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   List<TableModel> get tables => throw _privateConstructorUsedError;
+  Map<String, dynamic> get activeReservationData =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this TableState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +42,11 @@ abstract class $TableStateCopyWith<$Res> {
           TableState value, $Res Function(TableState) then) =
       _$TableStateCopyWithImpl<$Res, TableState>;
   @useResult
-  $Res call({bool isLoading, String? error, List<TableModel> tables});
+  $Res call(
+      {bool isLoading,
+      String? error,
+      List<TableModel> tables,
+      Map<String, dynamic> activeReservationData});
 }
 
 /// @nodoc
@@ -61,6 +67,7 @@ class _$TableStateCopyWithImpl<$Res, $Val extends TableState>
     Object? isLoading = null,
     Object? error = freezed,
     Object? tables = null,
+    Object? activeReservationData = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -75,6 +82,10 @@ class _$TableStateCopyWithImpl<$Res, $Val extends TableState>
           ? _value.tables
           : tables // ignore: cast_nullable_to_non_nullable
               as List<TableModel>,
+      activeReservationData: null == activeReservationData
+          ? _value.activeReservationData
+          : activeReservationData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ) as $Val);
   }
 }
@@ -87,7 +98,11 @@ abstract class _$$TableStateImplCopyWith<$Res>
       __$$TableStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, String? error, List<TableModel> tables});
+  $Res call(
+      {bool isLoading,
+      String? error,
+      List<TableModel> tables,
+      Map<String, dynamic> activeReservationData});
 }
 
 /// @nodoc
@@ -106,6 +121,7 @@ class __$$TableStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? error = freezed,
     Object? tables = null,
+    Object? activeReservationData = null,
   }) {
     return _then(_$TableStateImpl(
       isLoading: null == isLoading
@@ -120,6 +136,10 @@ class __$$TableStateImplCopyWithImpl<$Res>
           ? _value._tables
           : tables // ignore: cast_nullable_to_non_nullable
               as List<TableModel>,
+      activeReservationData: null == activeReservationData
+          ? _value._activeReservationData
+          : activeReservationData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ));
   }
 }
@@ -130,8 +150,10 @@ class _$TableStateImpl implements _TableState {
   _$TableStateImpl(
       {this.isLoading = false,
       this.error,
-      final List<TableModel> tables = const []})
-      : _tables = tables;
+      final List<TableModel> tables = const [],
+      final Map<String, dynamic> activeReservationData = const {}})
+      : _tables = tables,
+        _activeReservationData = activeReservationData;
 
   factory _$TableStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$TableStateImplFromJson(json);
@@ -150,9 +172,19 @@ class _$TableStateImpl implements _TableState {
     return EqualUnmodifiableListView(_tables);
   }
 
+  final Map<String, dynamic> _activeReservationData;
+  @override
+  @JsonKey()
+  Map<String, dynamic> get activeReservationData {
+    if (_activeReservationData is EqualUnmodifiableMapView)
+      return _activeReservationData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_activeReservationData);
+  }
+
   @override
   String toString() {
-    return 'TableState(isLoading: $isLoading, error: $error, tables: $tables)';
+    return 'TableState(isLoading: $isLoading, error: $error, tables: $tables, activeReservationData: $activeReservationData)';
   }
 
   @override
@@ -163,13 +195,19 @@ class _$TableStateImpl implements _TableState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
-            const DeepCollectionEquality().equals(other._tables, _tables));
+            const DeepCollectionEquality().equals(other._tables, _tables) &&
+            const DeepCollectionEquality()
+                .equals(other._activeReservationData, _activeReservationData));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, error,
-      const DeepCollectionEquality().hash(_tables));
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      error,
+      const DeepCollectionEquality().hash(_tables),
+      const DeepCollectionEquality().hash(_activeReservationData));
 
   /// Create a copy of TableState
   /// with the given fields replaced by the non-null parameter values.
@@ -191,7 +229,8 @@ abstract class _TableState implements TableState {
   factory _TableState(
       {final bool isLoading,
       final String? error,
-      final List<TableModel> tables}) = _$TableStateImpl;
+      final List<TableModel> tables,
+      final Map<String, dynamic> activeReservationData}) = _$TableStateImpl;
 
   factory _TableState.fromJson(Map<String, dynamic> json) =
       _$TableStateImpl.fromJson;
@@ -202,6 +241,8 @@ abstract class _TableState implements TableState {
   String? get error;
   @override
   List<TableModel> get tables;
+  @override
+  Map<String, dynamic> get activeReservationData;
 
   /// Create a copy of TableState
   /// with the given fields replaced by the non-null parameter values.

@@ -270,16 +270,15 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                                       'specialRequest':
                                           specialRequestController.text,
                                     };
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SelectTablePage(
-                                                    reservationData:
-                                                        reservationData)));
-                                    // await context
-                                    //     .read<ReservationCubit>()
-                                    //     .createReservation(reservationData);
-                                    //clearForm();
+                                    final result = await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => SelectTablePage(
+                                            reservationData: reservationData),
+                                      ),
+                                    );
+                                    if(result) {
+                                      clearForm();
+                                    }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

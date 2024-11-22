@@ -32,8 +32,8 @@ class DashboardReservationCubit extends Cubit<DashboardReservationState> {
     emit(state.copyWith(isLoading: true));
     try {
       final now = DateTime.now();
-      final startOfWeek = now.subtract(Duration(days: now.weekday - 1)).copyWith(hour: 0,minute: 0,second: 0); // Monday
-      final endOfWeek = startOfWeek.add(const Duration(days: 6)).copyWith(hour: 23,minute: 59,second: 59); // Sunday
+      final startOfWeek = now.subtract(Duration(days: now.weekday - 1)).copyWith(hour: 0,minute: 0,second: 0);
+      final endOfWeek = startOfWeek.add(const Duration(days: 6)).copyWith(hour: 23,minute: 59,second: 59);
       final reservationQuery = await firestore.collection('business_reservations/$uid/reservations').where('date', isGreaterThanOrEqualTo: startOfWeek, isLessThanOrEqualTo: endOfWeek).get();
       final reservations = reservationQuery.docs;
       Map<String, int> dailyReservations = {

@@ -13,38 +13,74 @@ class TableState with _$TableState {
     @Default(false) final bool isLoading,
     final String? error,
     @Default([]) final List<TableModel> tables,
+    @Default({}) Map<String, dynamic> activeReservationData,
   }) = _TableState;
   factory TableState.fromJson(Map<String, Object?> json) =>
       _$TableStateFromJson(json);
 }
 
 class TableCubit extends Cubit<TableState> {
-  TableCubit()
-      : super(TableState(
-          tables: List.generate(
-            10,
-            (index) => TableModel(id: index + 1),
+  TableCubit(Map<String, dynamic> activeReservationData)
+      : super(
+          TableState(
+            tables: List.generate(
+              10,
+              (index) => TableModel(id: index + 1),
+            ),
+            activeReservationData: activeReservationData,
           ),
-        )) {}
+        ) {
+    fetchData();
+  }
 
-  void toggleTableSelection(int tableId, Map<String, dynamic> reservationData) {
-    emit(state.copyWith(isLoading: true));
-    try {
-      final updatedTables = state.tables.map((table) {
-        if (table.id == tableId && table.reservationData.isEmpty) {
-          return TableModel(
-            id: table.id,
-            isSelected: !table.isSelected,
-            reservationData: reservationData,
-          );
-        }
-        return table;
-      }).toList();
+  void toggleTableSelection(int tableId) {
+    final activeReservationData = Map.of(state.activeReservationData);
 
-      emit(state.copyWith(tables: updatedTables));
-    } on Exception catch (e) {
-      emit(state.copyWith(error: e.toString()));
+    final indexOfTable = tableId - 1;
+    final table = state.tables[indexOfTable];
+
+    if (table.reservationData.isNotEmpty) {
+      return;
     }
-    emit(state.copyWith(isLoading: false));
+
+    if (activeReservationData['tableId'] == tableId) {
+      activeReservationData['tableId'] = null;
+    } else {
+      activeReservationData['tableId'] = tableId;
+    }
+
+    emit(state.copyWith(activeReservationData: activeReservationData));
+  }
+
+  Future<void> fetchData() async {
+    final firestore = FirebaseFirestore.instance;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    DateTime date = state.activeReservationData['date'];
+    final reservationRef = firestore
+        .collection('business_reservations/$uid/reservations')
+        .where('date',
+            isGreaterThanOrEqualTo:
+                date.copyWith(hour: 0, minute: 0, second: 0),
+            isLessThanOrEqualTo:
+                date.copyWith(hour: 23, minute: 59, second: 59));
+    final data = await reservationRef.get();
+    final reservations = data.docs;
+    List<TableModel> tables = List.from(state.tables);
+    for (final reservation in reservations) {
+      final reservationData = reservation.data();
+      final tableId = reservationData['tableId'];
+      if (tableId != null) {
+        TableModel table = state.tables[tableId];
+        table = table.copyWith(
+          reservationData: reservationData,
+        );
+        tables[tableId] = table;
+      }
+    }
+    emit(
+      state.copyWith(
+        tables: tables,
+      ),
+    );
   }
 }
