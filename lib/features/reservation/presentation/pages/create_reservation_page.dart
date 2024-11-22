@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:swift_reservation/features/table/presentation/pages/select_table_page.dart';
 
 import '../../bloc/reservation_cubit.dart';
 
@@ -47,12 +48,13 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
 
     if (pickedTime != null) {
       setState(() {
-        timeController.text = '${pickedTime.hour.toString().padLeft(2,'0')}:${pickedTime.minute}';
+        timeController.text =
+            '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute}';
       });
     }
   }
 
-  void clearForm(){
+  void clearForm() {
     firstNameController.clear();
     lastNameController.clear();
     phoneNumberController.clear();
@@ -234,8 +236,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                           backgroundColor: Colors.red,
                         ),
                       );
-                    }
-                    else if (state.success) {
+                    } else if (state.success) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Reservation created successfully'),
@@ -245,7 +246,8 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                     }
                   },
                   listenWhen: (previous, current) {
-                    return current.error != null || previous.success != current.success;
+                    return current.error != null ||
+                        previous.success != current.success;
                   },
                   builder: (context, state) {
                     return state.isLoading
@@ -254,22 +256,30 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
-                                onPressed: () async{
+                                onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await context
-                                        .read<ReservationCubit>()
-                                        .createReservation({
+                                    Map<String, dynamic> reservationData = {
                                       'firstName': firstNameController.text,
                                       'lastName': lastNameController.text,
                                       'phoneNumber': phoneNumberController.text,
                                       'email': emailController.text,
-                                      'date': dateTimeFormat.parse('${dateController.text} ${timeController.text}'),
+                                      'date': dateTimeFormat.parse(
+                                          '${dateController.text} ${timeController.text}'),
                                       'numberOfPeople':
                                           numberOfPeopleController.text,
                                       'specialRequest':
                                           specialRequestController.text,
-                                    });
-                                    clearForm();
+                                    };
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SelectTablePage(
+                                                    reservationData:
+                                                        reservationData)));
+                                    // await context
+                                    //     .read<ReservationCubit>()
+                                    //     .createReservation(reservationData);
+                                    //clearForm();
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -287,7 +297,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                               ),
                               const SizedBox(width: 10),
                               ElevatedButton(
-                                onPressed: () async{
+                                onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     await context
                                         .read<ReservationCubit>()
@@ -296,7 +306,8 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                                       'lastName': lastNameController.text,
                                       'phoneNumber': phoneNumberController.text,
                                       'email': emailController.text,
-                                      'date': dateTimeFormat.parse('${dateController.text} ${timeController.text}'),
+                                      'date': dateTimeFormat.parse(
+                                          '${dateController.text} ${timeController.text}'),
                                       'numberOfPeople':
                                           numberOfPeopleController.text,
                                       'specialRequest':
