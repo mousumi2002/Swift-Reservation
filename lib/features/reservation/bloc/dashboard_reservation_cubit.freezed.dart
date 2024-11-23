@@ -24,6 +24,7 @@ mixin _$DashboardReservationState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   int get totalReservations => throw _privateConstructorUsedError;
+  int get remainingTables => throw _privateConstructorUsedError;
   int get totalGuests => throw _privateConstructorUsedError;
   List<Map<String, dynamic>> get reservationsPerDay =>
       throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $DashboardReservationStateCopyWith<$Res> {
       {bool isLoading,
       String? error,
       int totalReservations,
+      int remainingTables,
       int totalGuests,
       List<Map<String, dynamic>> reservationsPerDay});
 }
@@ -71,6 +73,7 @@ class _$DashboardReservationStateCopyWithImpl<$Res,
     Object? isLoading = null,
     Object? error = freezed,
     Object? totalReservations = null,
+    Object? remainingTables = null,
     Object? totalGuests = null,
     Object? reservationsPerDay = null,
   }) {
@@ -86,6 +89,10 @@ class _$DashboardReservationStateCopyWithImpl<$Res,
       totalReservations: null == totalReservations
           ? _value.totalReservations
           : totalReservations // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingTables: null == remainingTables
+          ? _value.remainingTables
+          : remainingTables // ignore: cast_nullable_to_non_nullable
               as int,
       totalGuests: null == totalGuests
           ? _value.totalGuests
@@ -112,6 +119,7 @@ abstract class _$$DashboardReservationStateImplCopyWith<$Res>
       {bool isLoading,
       String? error,
       int totalReservations,
+      int remainingTables,
       int totalGuests,
       List<Map<String, dynamic>> reservationsPerDay});
 }
@@ -134,6 +142,7 @@ class __$$DashboardReservationStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? error = freezed,
     Object? totalReservations = null,
+    Object? remainingTables = null,
     Object? totalGuests = null,
     Object? reservationsPerDay = null,
   }) {
@@ -149,6 +158,10 @@ class __$$DashboardReservationStateImplCopyWithImpl<$Res>
       totalReservations: null == totalReservations
           ? _value.totalReservations
           : totalReservations // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingTables: null == remainingTables
+          ? _value.remainingTables
+          : remainingTables // ignore: cast_nullable_to_non_nullable
               as int,
       totalGuests: null == totalGuests
           ? _value.totalGuests
@@ -169,6 +182,7 @@ class _$DashboardReservationStateImpl implements _DashboardReservationState {
       {this.isLoading = false,
       this.error,
       this.totalReservations = 0,
+      this.remainingTables = 10,
       this.totalGuests = 0,
       final List<Map<String, dynamic>> reservationsPerDay = const []})
       : _reservationsPerDay = reservationsPerDay;
@@ -186,6 +200,9 @@ class _$DashboardReservationStateImpl implements _DashboardReservationState {
   final int totalReservations;
   @override
   @JsonKey()
+  final int remainingTables;
+  @override
+  @JsonKey()
   final int totalGuests;
   final List<Map<String, dynamic>> _reservationsPerDay;
   @override
@@ -199,7 +216,7 @@ class _$DashboardReservationStateImpl implements _DashboardReservationState {
 
   @override
   String toString() {
-    return 'DashboardReservationState(isLoading: $isLoading, error: $error, totalReservations: $totalReservations, totalGuests: $totalGuests, reservationsPerDay: $reservationsPerDay)';
+    return 'DashboardReservationState(isLoading: $isLoading, error: $error, totalReservations: $totalReservations, remainingTables: $remainingTables, totalGuests: $totalGuests, reservationsPerDay: $reservationsPerDay)';
   }
 
   @override
@@ -212,6 +229,8 @@ class _$DashboardReservationStateImpl implements _DashboardReservationState {
             (identical(other.error, error) || other.error == error) &&
             (identical(other.totalReservations, totalReservations) ||
                 other.totalReservations == totalReservations) &&
+            (identical(other.remainingTables, remainingTables) ||
+                other.remainingTables == remainingTables) &&
             (identical(other.totalGuests, totalGuests) ||
                 other.totalGuests == totalGuests) &&
             const DeepCollectionEquality()
@@ -225,6 +244,7 @@ class _$DashboardReservationStateImpl implements _DashboardReservationState {
       isLoading,
       error,
       totalReservations,
+      remainingTables,
       totalGuests,
       const DeepCollectionEquality().hash(_reservationsPerDay));
 
@@ -250,6 +270,7 @@ abstract class _DashboardReservationState implements DashboardReservationState {
           {final bool isLoading,
           final String? error,
           final int totalReservations,
+          final int remainingTables,
           final int totalGuests,
           final List<Map<String, dynamic>> reservationsPerDay}) =
       _$DashboardReservationStateImpl;
@@ -263,6 +284,8 @@ abstract class _DashboardReservationState implements DashboardReservationState {
   String? get error;
   @override
   int get totalReservations;
+  @override
+  int get remainingTables;
   @override
   int get totalGuests;
   @override

@@ -27,14 +27,31 @@ class DashboardPage extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 8,),
-                    const Text('Weekly Data',style: TextStyle(color: Colors.black,fontSize: 20),),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text(
+                      'Weekly Data',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        MetricCard(title: 'Total\nReservations', value: state.totalReservations.toString()),
-                        MetricCard(title: 'Total\nPeople', value: state.totalGuests.toString()),
+                        MetricCard(
+                          title: 'Total\nReservations',
+                          value: state.totalReservations.toString(),
+                        ),
+                        MetricCard(
+                          title: 'Total\nPeople',
+                          value: state.totalGuests.toString(),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -42,6 +59,17 @@ class DashboardPage extends StatelessWidget {
                       color: Colors.black,
                       margin: const EdgeInsets.all(10.0),
                       child: BarChart(dataSource: state.reservationsPerDay),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      'Tables remaining today: ${state.remainingTables}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 );
@@ -65,19 +93,19 @@ class MetricCard extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Container(
-        width: 150,
+        width: 125,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Text(
               value,
-              style: const TextStyle(fontSize: 24, color: Colors.blue),
+              style: const TextStyle(fontSize: 20, color: Colors.blue),
               textAlign: TextAlign.center,
             ),
           ],

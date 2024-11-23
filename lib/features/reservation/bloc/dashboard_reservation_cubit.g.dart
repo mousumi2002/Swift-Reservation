@@ -12,6 +12,7 @@ _$DashboardReservationStateImpl _$$DashboardReservationStateImplFromJson(
       isLoading: json['isLoading'] as bool? ?? false,
       error: json['error'] as String?,
       totalReservations: (json['totalReservations'] as num?)?.toInt() ?? 0,
+      remainingTables: (json['remainingTables'] as num?)?.toInt() ?? 10,
       totalGuests: (json['totalGuests'] as num?)?.toInt() ?? 0,
       reservationsPerDay: (json['reservationsPerDay'] as List<dynamic>?)
               ?.map((e) => e as Map<String, dynamic>)
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$DashboardReservationStateImplToJson(
       'isLoading': instance.isLoading,
       'error': instance.error,
       'totalReservations': instance.totalReservations,
+      'remainingTables': instance.remainingTables,
       'totalGuests': instance.totalGuests,
       'reservationsPerDay': instance.reservationsPerDay,
     };
