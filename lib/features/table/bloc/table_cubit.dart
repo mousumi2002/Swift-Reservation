@@ -68,13 +68,15 @@ class TableCubit extends Cubit<TableState> {
     List<TableModel> tables = List.from(state.tables);
     for (final reservation in reservations) {
       final reservationData = reservation.data();
+      print(reservationData);
       final tableId = reservationData['tableId'];
       if (tableId != null) {
-        TableModel table = state.tables[tableId];
+        final tableIndex = tableId - 1;
+        TableModel table = state.tables[tableIndex];
         table = table.copyWith(
           reservationData: reservationData,
         );
-        tables[tableId] = table;
+        tables[tableIndex] = table;
       }
     }
     emit(

@@ -126,6 +126,7 @@ class BarChart extends StatelessWidget {
       primaryYAxis: const NumericAxis(
         labelStyle: TextStyle(color: Colors.white),
       ),
+      tooltipBehavior: TooltipBehavior(enable: true),
       title: const ChartTitle(
         text: 'Reservations Per Day',
         textStyle: TextStyle(color: Colors.white),
@@ -139,6 +140,8 @@ class BarChart extends StatelessWidget {
           xValueMapper: (data, _) => data['day'],
           yValueMapper: (data, _) => data['reservations'],
           color: Colors.blue,
+          enableTooltip: true,
+          name: 'Reservations',
         ),
       ],
     );

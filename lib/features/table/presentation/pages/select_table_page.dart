@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../reservation/bloc/reservation_cubit.dart';
 import '../../bloc/table_cubit.dart';
 
@@ -7,13 +8,30 @@ class SelectTablePage extends StatelessWidget {
   final Map<String, dynamic> reservationData;
 
   const SelectTablePage({super.key, required this.reservationData});
+
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('dd-MM-yyyy');
     return BlocProvider(
       create: (_) => TableCubit(reservationData),
       child: Scaffold(
-        appBar: AppBar(iconTheme: const IconThemeData(color: Colors.white),
-          title: const Text('Table Selector',style: TextStyle(color: Colors.white),),
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text(
+            'Table Selector',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            Text(
+              dateFormat.format(reservationData['date']),
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+          ],
           backgroundColor: Colors.black,
         ),
         body: Padding(
@@ -105,17 +123,28 @@ class SelectTablePage extends StatelessWidget {
                   ),
                   BlocProvider(
                     create: (context) => ReservationCubit(),
-                    child: Builder(builder: (context) {
-                      return ElevatedButton(
-                        onPressed: () async {
-                          await context
-                              .read<ReservationCubit>()
-                              .createReservation(state.activeReservationData);
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text('Confirm Booking'),
-                      );
-                    }),
+                    child: Builder(
+                      builder: (context) {
+                        return BlocListener<ReservationCubit, ReservationState>(
+                          listener: (context, state) {
+                            if (state.success) {
+                              Navigator.of(context).pop(true);
+                            }
+                          },
+                          listenWhen: (previous, current) =>
+                              previous.success != current.success,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await context
+                                  .read<ReservationCubit>()
+                                  .createReservation(
+                                      state.activeReservationData);
+                            },
+                            child: const Text('Confirm Booking'),
+                          ),
+                        );
+                      },
+                    ),
                   )
                 ],
               );

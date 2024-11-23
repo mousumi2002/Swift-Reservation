@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:swift_reservation/features/table/presentation/pages/select_table_page.dart';
@@ -197,8 +198,13 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      final guests = value ?? '0';
+                      final guestToCheck = int.tryParse(guests) ?? 0;
+                      if (guestToCheck <= 0) {
                         return 'Please enter number of people';
                       }
                       return null;
@@ -270,13 +276,14 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                                       'specialRequest':
                                           specialRequestController.text,
                                     };
-                                    final result = await Navigator.of(context).push(
+                                    final result =
+                                        await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => SelectTablePage(
                                             reservationData: reservationData),
                                       ),
                                     );
-                                    if(result) {
+                                    if (result == true) {
                                       clearForm();
                                     }
                                   }
