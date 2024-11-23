@@ -88,21 +88,13 @@ class LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthCubit>().login(
-                          emailController.text,
-                          passwordController.text,
-                        );
+                              emailController.text,
+                              passwordController.text,
+                            );
                       }
                     },
                     child: const Text("Login"),
                   ),
-                  if (!state.isSignedIn && !state.isLoading && !state.isSignedIn)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 16.0),
-                      child: Text(
-                        "Invalid email or password",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
                 ],
               ),
             );
