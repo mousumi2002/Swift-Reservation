@@ -46,5 +46,6 @@ flutter run
     - Used Firebase authentication to authenticate users based on email and password
     - Users need to be created in Firebase manually as based on my research reservation systems are invite-only and not open to the public
 
-
-
+## Challenges faced
+    - The main challenge was to implement the table selector page, I brainstormed a lot and finally came up with a solution to use a list of tables and update the reservation data in Firestore
+    - I also had to research a lot on reservation management systems to understand the key features and implement them in the app
