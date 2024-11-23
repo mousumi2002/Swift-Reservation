@@ -41,13 +41,7 @@ class CardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> statusList = [
-      'Confirmed',
-      'Waiting',
-      'Cancelled',
-      'CheckOut',
-      'CheckIn'
-    ];
+    final tableId = reservationData['tableId'];
     final timeFormat = DateFormat('hh:mm a');
     return Container(
       margin: const EdgeInsets.all(8),
@@ -68,6 +62,20 @@ class CardTile extends StatelessWidget {
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   const Spacer(),
+                  if (tableId != null) ...[
+                    const Icon(
+                      Icons.table_restaurant,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      '$tableId',
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
+                  const SizedBox(width: 8),
                   const Icon(
                     Icons.people_alt_rounded,
                     color: Colors.white,
@@ -79,9 +87,7 @@ class CardTile extends StatelessWidget {
                     numberOfPeople,
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                 ],
               ),
               Row(
@@ -168,10 +174,20 @@ class CardTile extends StatelessWidget {
                           final collectionRef = firestore.collection(
                               'business_reservations/$uid/reservations');
                           final reservationDocRef = collectionRef.doc(docId);
-                          Map<String, String> updatedStatus = {'status': value};
+                          Map<String, dynamic> updatedStatus = {
+                            'status': value
+                          };
+                          final clearSeatStatuses = [
+                            'Cancelled',
+                            'CheckOut',
+                            'Waiting'
+                          ];
+                          if (clearSeatStatuses.contains(value)) {
+                            updatedStatus['tableId'] = FieldValue.delete();
+                          }
                           reservationDocRef.update(updatedStatus);
                         },
-                        items: statusList
+                        items: getStatusListForCurrentStatus(status)
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -189,4 +205,18 @@ class CardTile extends StatelessWidget {
       ),
     );
   }
+}
+
+getStatusListForCurrentStatus(String status) {
+  final statusList = [status];
+  if (status == 'Confirmed') {
+    statusList.addAll(['Waiting', 'Cancelled', 'CheckOut', 'CheckIn']);
+  } else if (status == 'Waiting') {
+    statusList.addAll(['Confirmed', 'Cancelled']);
+  } else if (status == 'Cancelled') {
+    statusList.addAll(['Waiting']);
+  } else if (status != 'CheckOut') {
+    statusList.addAll(['Confirmed', 'Cancelled', 'CheckOut']);
+  }
+  return statusList;
 }
